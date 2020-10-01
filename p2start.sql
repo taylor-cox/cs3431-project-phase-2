@@ -308,20 +308,6 @@ Insert into STAFFPOSITION (ACCOUNTNAME,POSITIONID) values ('rcane','COORDDESIGN'
 Insert into STAFFPOSITION (ACCOUNTNAME,POSITIONID) values ('ganoon','ASSOCARCHIVIST');
 Insert into STAFFPOSITION (ACCOUNTNAME,POSITIONID) values ('tam','ASSTARCHIVIST');
 
-select * from StaffPosition order by accountName;
-
-select * from StaffPhone order by accountName;
-
-select * from Phone order by phoneNumber;
-
-select * from Staff order by accountName;
-
-select * from Position order by positionID;
-
-select * from Location order by locationID;
-
-select * from Office order by locationID;
-
 Insert into Edge(startingID, endingID) values ('202A', 'H201');
 Insert into Edge(startingID, endingID) values ('H201', '202A');
 Insert into Edge(startingID, endingID) values ('H201', 'H202');
@@ -445,13 +431,9 @@ Insert into Edge(startingID, endingID) values ('308', 'H315');
 Insert into Edge(startingID, endingID) values ('H315', '307');
 Insert into Edge(startingID, endingID) values ('307', 'H315');
 
-select * from Edge;
-
 insert into Path(pathID) values ('305B_M');
 insert into Path(pathID) values ('S2_206');
 insert into Path(pathID) values ('202E_307');
-
-select * from Path;
 
 insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('305B_M', '305B', 'H303', 1);
 insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('305B_M', 'H303', 'H304', 2);
@@ -487,6 +469,13 @@ insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('202E
 insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('202E_307', 'H314', 'H315', 11);
 insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('202E_307', 'H315', '307', 12);
 
+select * from Location;
 
-select * from PathEdge order by pathID, sequenceNumber;
+create view NoCurator as
+select l.locationID, s.accountName from Staff s, StaffPosition sp, Location l
+where s.accountName = sp.accountName
+and l.locationID = s.locationID
+and sp.positionID != 'CURATOR';
 
+select locationID, count(*) as CNT from NoCurator
+group by locationID;
