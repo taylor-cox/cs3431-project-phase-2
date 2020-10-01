@@ -1,4 +1,4 @@
-drop table PathEdge; 
+drop table PathEdge;
 drop table Path;
 drop table Edge;
 drop table StaffPhone;
@@ -10,7 +10,7 @@ drop table Office;
 drop table Location;
 
 create table Location(
-    locationID varchar2(50) Primary Key, 
+    locationID varchar2(50) Primary Key,
     locationName varchar2(50),
     locationType varchar2(50),
     xcoord number(6, 0),
@@ -18,7 +18,7 @@ create table Location(
     floor varchar2(1),
     CONSTRAINT CK_Location_Floor CHECK (floor IN ('B', '1', '2', '3')),
     Constraint UQ_Location_Combo Unique (xcoord, ycoord, floor)
-    
+
 );
 
 
