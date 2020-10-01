@@ -561,3 +561,22 @@ begin
   RAISE_APPLICATION_ERROR(-20004, 'Cannot insert an office into a non-office location.');
  end if;
 end;
+
+-- Question 6
+create or replace trigger JobLimit
+ before
+ update or insert
+ on StaffPosition
+declare
+ jobAmount number;
+ cursor c1 is select count(*) as CNT into jobAmount from StaffPosition group by accountName;
+begin
+ open c1;
+ loop
+  fetch c1 into jobAmount;
+  if(jobAmount > 3) then
+   RAISE_APPLICATION_ERROR(-20004, 'Cannot give a StaffMember more than 3 Positions.');
+  end if;
+ end loop;
+ close c1;
+end;
