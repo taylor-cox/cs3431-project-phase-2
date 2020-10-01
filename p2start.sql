@@ -1,3 +1,9 @@
+/*
+CS 3431
+Project 2
+Taylor Cox and Jason Davis
+*/
+
 drop table PathEdge;
 drop table Path;
 drop table Edge;
