@@ -478,7 +478,7 @@ insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('202E
 select * from Location;
 
 -- Question 1
-create view NoCurator as
+create or replace view NoCurator as
 select l.locationID, s.accountName from Staff s, StaffPosition sp, Location l
 where s.accountName = sp.accountName
 and l.locationID = s.locationID
