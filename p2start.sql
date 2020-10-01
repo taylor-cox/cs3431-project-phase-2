@@ -517,3 +517,15 @@ end;
 
 set serveroutput on;
 exec StaffInOffice('305C');
+
+-- Question 3
+create or replace trigger NoSameStartEnd
+  before
+  insert
+  on edge
+  for each row
+begin
+  if (:NEW.startingID = :NEW.endingID) then
+    RAISE_APPLICATION_ERROR(-20004, 'Cannot insert edge with same starting and ending location.');
+  end if;
+end;
