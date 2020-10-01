@@ -471,6 +471,7 @@ insert into PathEdge(pathID, startingID, endingID, sequenceNumber) values ('202E
 
 select * from Location;
 
+-- Question 1
 create view NoCurator as
 select l.locationID, s.accountName from Staff s, StaffPosition sp, Location l
 where s.accountName = sp.accountName
@@ -479,3 +480,34 @@ and sp.positionID != 'CURATOR';
 
 select locationID, count(*) as CNT from NoCurator
 group by locationID;
+
+-- Question 2
+drop procedure StaffInOffice;
+
+create or replace procedure StaffInOffice (locationID_in varchar2) IS
+  countInOffice number;
+  maxocp number;
+begin
+  countInOffice := -1;
+  maxocp := -1;
+  select maxOccupancy, cnt into maxocp, countInOffice
+  from
+    Office o,
+    (select locationID, count(*) as cnt
+      from
+        (select distinct s.accountName, l.locationID
+          from
+            Staff s,
+            StaffPosition sp,
+            Location l
+          where s.accountName = sp.accountName
+            and l.locationID = s.locationID
+            and locationID_in = l.locationID)
+          group by locationID) x
+  where
+  o.locationID = x.locationID;
+  dbms_output.put_line('Office ' || locationID_in || ': ' || countInOffice || ' assigned, ' || maxocp || ' max occupancy.');
+end;
+
+set serveroutput on;
+exec StaffInOffice('305C');
