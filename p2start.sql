@@ -529,3 +529,20 @@ begin
     RAISE_APPLICATION_ERROR(-20004, 'Cannot insert edge with same starting and ending location.');
   end if;
 end;
+
+-- Question 4
+create or replace trigger OnlyStaircases
+  before
+  insert
+  on edge
+  for each row
+declare
+  floor1 number;
+  floor2 number;
+begin
+  select floor into floor1 from Location where :NEW.startingID = locationID;
+  select floor into floor2 from Location where :NEW.endingID = locationID;
+  if (floor2 = floor1) then
+    RAISE_APPLICATION_ERROR(-20004, 'Cannot insert a staircase edge where both locations are on the same floor.');
+  end if;
+end;
