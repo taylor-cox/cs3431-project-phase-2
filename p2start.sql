@@ -546,3 +546,18 @@ begin
     RAISE_APPLICATION_ERROR(-20004, 'Cannot insert a staircase edge where both locations are on the same floor.');
   end if;
 end;
+
+-- Question 5
+create or replace trigger MustBeOffice
+ before
+ update or insert
+ on Office
+ for each row
+declare
+ locationType varchar(50);
+begin
+ select locationType into locationType from Location where :new.locationId = locationId;
+ if(locationType != 'Office') then
+  RAISE_APPLICATION_ERROR(-20004, 'Cannot insert an office into a non-office location.');
+ end if;
+end;
