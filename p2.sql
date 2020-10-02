@@ -1,3 +1,8 @@
+/*
+CS 3431
+Project 2
+Taylor Cox and Jason Davis
+*/
 -- Question 1
 create or replace view NoCurator as
 select l.locationID, s.accountName from Staff s, StaffPosition sp, Location l
